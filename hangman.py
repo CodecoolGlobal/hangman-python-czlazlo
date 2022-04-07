@@ -1,3 +1,4 @@
+from pickle import FALSE
 import random
 #lists
 countries = []
@@ -99,13 +100,22 @@ else:
     print(dashed_out_word)
 #Difficulty of word lvl- hard
 
-
 #itt meg jelolom a random szonak a hosszat underscore(_)-ba
 #Difficulty for length of words
 while wrong_guesses < max_wrong:
-    print("Used letters: ", used_letters)
-    print("so far, the word is: ", dashed_out_word)
-    guess= input("enter your letter guess:")
+    print("Used letters: ", *used_letters)
+    print("\n So far, the word is: ", dashed_out_word)
+    is_valid_input= False
+    while not is_valid_input:
+      guess= input("\n Please, enter your letter guess:")
+      if  len(guess) != 1:
+        print("please input a letter")
+      elif not guess.isalpha():
+        print("You can only use letters")
+      elif guess in used_letters:
+        print("You have already entered this letter")
+      else: 
+        is_valid_input = True
     used_letters.add(guess)
     if guess not in country:
         print(HANGMAN[wrong_guesses])
@@ -113,7 +123,11 @@ while wrong_guesses < max_wrong:
         print("Sorry, that was incorrect")
     #increase the number of incorrect by 1
         wrong_guesses += 1
+    if wrong_guesses == max_wrong:
+      print("You got hanged :(")
+      print("The correct word was: ",country)
 
+   
     else: 
         print("You have guessed correctly")
         new_dashed_out_word = ""
@@ -123,24 +137,6 @@ while wrong_guesses < max_wrong:
           else:
             new_dashed_out_word += dashed_out_word[i]
         dashed_out_word = new_dashed_out_word
-
-                                    #add new guessed letter to list of guessed letters
-     
-     #give a new version of the word with mixed letters and dashe
-#check if letter was already used
-
-
-if guess in used_letters:
-    print("You have already guessed that letter", guess)
-    guess = input("Enter your letter guess:")
-    guess = guess.lower()
-#add new guessed letter to list of guessed letters
-    used_letters.append(guess)
-
-#end game
-else:
-    print("You get to live")
-    wrong_guesses == max_wrong
-    print(HANGMAN[wrong_guesses])
-    print("*Gets hanged*")
-    print("The correct word was",country)
+    if new_dashed_out_word == country:
+      print("You won!")
+      break
